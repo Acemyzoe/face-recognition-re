@@ -1,4 +1,4 @@
-# 基于opencv、tensorflow的人脸识别
+# 基于opencv、tensorflow的人脸识别2.0
   **BY**  [GJ](https://github.com/Acemyzoe/face-recognition)
 ## 使用指南
 1. 运行catch_face.py获取自己的脸  
