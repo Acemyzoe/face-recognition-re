@@ -1,4 +1,5 @@
-
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import tensorflow as tf
 import numpy as np
@@ -12,7 +13,11 @@ import math
 if __name__ == '__main__':
         
     #加载模型
-    model = CNN()
+    mode = True
+    if mode:
+        model = tf.keras.models.load_model('./model/face_model_h5.h5')
+    else:
+        model = tf.saved_model.load('./model/face_model_opt')
     #捕获指定摄像头的实时视频流
     cap = cv2.VideoCapture(0)   
     #人脸识别分类器本地存储路径
@@ -35,10 +40,26 @@ if __name__ == '__main__':
                 x, y, w, h = faceRect               
                 #截取脸部图像提交给模型识别这是谁
                 image = frame[y - 10: y + h + 10, x - 10: x + w + 10]
-                face_probe = model.face_predict(image)   #获得预测值
+                #载入picture
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                #image = resize_image(image)
+                image = cv2.resize(image,(64,64))
+                image = tf.keras.preprocessing.image.img_to_array(image)
+                #image = image.reshape((1, 64, 64, 1))                    
+        
+                #浮点并归一化
+                #image = image.astype('float32')
+                image = np.expand_dims(image, axis = 0)
+                image /= 255
+                #给出输入属于各个类别的概率 
+                if mode:
+                    result = model.predict(image)
+                else:
+                    result = model(image)
+                face_probe = result[0]   #获得预测值
                 #print("GJ:{:0.2%} unknown:{:0.2%}".format(face_probe[0],face_probe[1]))
                
-                if face_probe[0] >=0.98:                                                                           
+                if face_probe[0] >=0.9:                                                                           
                     #文字提示是谁
                     name = 'GJ'
                 else:
