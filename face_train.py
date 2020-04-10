@@ -6,7 +6,11 @@ from face_data import load_dataset, resize_image, IMAGE_SIZE
 import tensorflow as tf
 #from tensorflow.keras.layers import Dense, Flatten, Conv2D
 import cv2
- 
+
+physical_devices = tf.config.experimental.list_physical_devices('GPU')
+assert len(physical_devices) > 0, "Not enough GPU hardware devices available"
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
  #建立CNN模型
 class CNN():
     #模型初始化
