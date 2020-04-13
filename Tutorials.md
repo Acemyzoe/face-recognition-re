@@ -51,25 +51,30 @@
     >>model.compile (optimizer='adam',loss = 'sparse_categorical_crossentropy',metrics = ['accuracy'])   
 
 > #开始训练，使用model.fit，参数一般包括图像和标签,迭代次数。模型训练时会显示损失和准确性指标。    
->>  model.fit(train_images, train_labels, batch_size=32,epochs=5)  
+>
+> >  model.fit(train_images, train_labels, batch_size=32,epochs=5)  
 
 > #评估准确性，比较模型在测试数据集上的表现:  
->>model.evaluate(test_images,test_labels, verbose=2)   
+>
+> >model.evaluate(test_images,test_labels, verbose=2)   
 
 > #保存模型，可以只保存模型权重参数，也可以保存整个模型（网络结构和权重参数）。不同的保存形式，后续的模型部署方式不同。     
->> model.save('./model/face_model0.h5')   
+>
+> > model.save('./model/face_model0.h5')   
 
 > #作出预测，使用预训练的模型预测某些图像   
->> result = pre_model.predict(image) #给出输入属于各个类别的概率,结果是2个类别组成的数组，可以np.argmax(result[0])看哪个标签的置信度最高。  
+>
+> > result = pre_model.predict(image) #给出输入属于各个类别的概率,结果是2个类别组成的数组，可以np.argmax(result[0])看哪个标签的置信度最高。  
 
 ## 模型部署：通过摄像头实时识别人脸
 程序的流程如下：  
->1. 加载模型、人脸分类器、摄像头设备;   
+> 1. 加载模型、人脸分类器、摄像头设备;   
 >>  model = tf.keras.models.load_model('./model/face_model_h5.h5')  
 >>  cascade_path ="./haarcascades/haarcascade_frontalface_alt2.xml"  
->>  cap = cv2.VideoCapture(0)   
->2. 通过摄像头获取图像，通过分类器识别出人脸;   
->3. 将人脸图像处理后交给模型识别;  
->4. 根据预测值设置置信区间并作出判断，打印出预测数据。  
-        
+>>  cap = cv2.VideoCapture(0)  
+
+ > 2. 通过摄像头获取图像，通过分类器识别出人脸;   
+> 3. 将人脸图像处理后交给模型识别;  
+> 4. 根据预测值设置置信区间并作出判断，打印出预测数据。  
+
 
