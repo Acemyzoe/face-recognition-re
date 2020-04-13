@@ -19,12 +19,12 @@ class CNN():
         self.pre_model = tf.keras.models.load_model('./model/face_model0.h5')
     
     def build_model(self):
-        self.model = tf.keras.models.Sequential()
+        self.model = tf.keras.models.Sequential() #将图像格式从二维数组转换为一维数组。可以将这一层看作是堆叠图像中的像素行并将它们排成一行。该层没有学习参数。它只会重新格式化数据。
         self.model.add(tf.keras.layers.Flatten(input_shape=(IMAGE_SIZE,IMAGE_SIZE,1)))
         self.model.add(tf.keras.layers.Dense(512, activation='relu'))
-        self.model.add(tf.keras.layers.Dropout(0.2))
-        self.model.add(tf.keras.layers.Dense(2, activation='softmax'))
-        self.model.summary()
+        self.model.add(tf.keras.layers.Dropout(0.2))  #是Google提出的一种正则化技术，作用是在神经网络中丢弃部分神经元，用以对抗过拟合。
+        self.model.add(tf.keras.layers.Dense(2, activation='softmax')) #像素展平后，网络由tf.keras.layers.Dense两层序列组成。这些是紧密连接或完全连接的神经层。第一Dense层有512个节点（或神经元）。第二层（也是最后一层）返回长度为2的logits数组。每个节点包含一个得分，该得分指示当前图像属于2个类之一。
+        self.model.summary() #预览网络结构
 
     def train_model(self,path_name):
         images, labels = load_dataset(path_name)         
