@@ -16,7 +16,7 @@ class CNN():
     #模型初始化
     def __init__(self):
         self.model = None
-        self.pre_model = tf.keras.models.load_model('./model/face_model0.h5')
+        self.pre_model = tf.keras.models.load_model('./model/face_model_h5.h5')
     
     def build_model(self):
         self.model = tf.keras.models.Sequential() #将图像格式从二维数组转换为一维数组。可以将这一层看作是堆叠图像中的像素行并将它们排成一行。该层没有学习参数。它只会重新格式化数据。
@@ -50,8 +50,8 @@ class CNN():
         print('accuracy:',score[1])
 
     def save_model(self):
-        self.model.save('./model/face_model0.h5')
-        self.model.save('./model/face_model0',save_format = 'tf')
+        self.model.save('./model/face_model.h5')
+        self.model.save('./model/face_model',save_format = 'tf')
 
     #识别人脸
     def face_predict(self,image):    
@@ -72,8 +72,8 @@ if __name__ == '__main__':
     model = CNN()#模型初始化
     model.build_model()
 
-    #model.train_model('./face_data')
-    #model.save_model()
+    model.train_model('./face_data')
+    model.save_model()
 
-    image = cv2.imread('./1.jpg')
-    model.face_predict(image)
+    #image = cv2.imread('./1.jpg')
+    #model.face_predict(image)

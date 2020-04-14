@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 __author__ = 'Acemyzoe'
+'''
+tf_model to tensorrt
+'''
 import tensorflow as tf
 
 def trt(path):

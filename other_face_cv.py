@@ -2,7 +2,7 @@
 import os
 import cv2
 
-cascPath = "/home/ace/anaconda3/pkgs/libopencv-3.4.2-hb342d67_1/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
+cascPath = "./haarcascades/haarcascade_frontalface_alt.xml"
 input_dir = './lfw'
 output_dir = './other_faces'
 if not os.path.exists(output_dir):

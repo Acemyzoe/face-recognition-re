@@ -16,7 +16,7 @@ def CatchPICFromVideo(window_name, camera_idx, catch_pic_num, path_name):
 
     # OpenCV使用人脸识别分类器
     classfier = cv2.CascadeClassifier(
-        "/home/ace/anaconda3/pkgs/libopencv-3.4.2-hb342d67_1/share/OpenCV/haarcascades/haarcascade_frontalface_alt2.xml")
+        "./haarcascades/haarcascade_frontalface_alt2.xml")
 
     # 识别出人脸后要画的边框的颜色，RGB格式
     color = (0, 255, 0)
