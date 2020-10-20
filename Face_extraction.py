@@ -13,7 +13,7 @@ def resize(pic_name):
     gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     
     #轮询所有分类器直至获取到人脸
-    cascPaths = ["./model/haarcascade_frontalface_alt2.xml","./model/haarcascade_frontalface_alt.xml","./model/haarcascade_frontalface_default.xml"]   
+    cascPaths = ["./haarcascades/haarcascade_frontalface_alt2.xml","./haarcascades/haarcascade_frontalface_alt.xml","./model/haarcascade_frontalface_default.xml"]   
     for cascPath in cascPaths:
         faceCascade = cv2.CascadeClassifier(cascPath)
 

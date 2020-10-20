@@ -6,11 +6,11 @@ from face_data import load_dataset, resize_image, IMAGE_SIZE
 import tensorflow as tf
 #from tensorflow.keras.layers import Dense, Flatten, Conv2D
 import cv2
-
+'''
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 assert len(physical_devices) > 0, "Not enough GPU hardware devices available"
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
-
+'''
  #建立CNN模型
 class CNN():
     #模型初始化
@@ -20,11 +20,16 @@ class CNN():
     
     def build_model(self):
         self.model = tf.keras.models.Sequential() #将图像格式从二维数组转换为一维数组。可以将这一层看作是堆叠图像中的像素行并将它们排成一行。该层没有学习参数。它只会重新格式化数据。
-        self.model.add(tf.keras.layers.Flatten(input_shape=(IMAGE_SIZE,IMAGE_SIZE,1)))
+        self.model.add(tf.keras.layers.Conv2D(32, (3, 3), activation='relu',input_shape=(IMAGE_SIZE,IMAGE_SIZE,1)))
+        #self.model.add(tf.keras.layers.Dropout(0.2))  #是Google提出的一种正则化技术，作用是在神经网络中丢弃部分神经元，用以对抗过拟合。
+        self.model.add(tf.keras.layers.MaxPool2D(pool_size=(2,2), strides=(2,2)))
+        self.model.add(tf.keras.layers.Conv2D(64, (3, 3), activation='relu'))
+        self.model.add(tf.keras.layers.MaxPool2D(pool_size=(2,2), strides=(2,2)))
+        self.model.add(tf.keras.layers.Flatten())
         self.model.add(tf.keras.layers.Dense(512, activation='relu'))
-        self.model.add(tf.keras.layers.Dropout(0.2))  #是Google提出的一种正则化技术，作用是在神经网络中丢弃部分神经元，用以对抗过拟合。
         self.model.add(tf.keras.layers.Dense(2, activation='softmax')) #像素展平后，网络由tf.keras.layers.Dense两层序列组成。这些是紧密连接或完全连接的神经层。第一Dense层有512个节点（或神经元）。第二层（也是最后一层）返回长度为2的logits数组。每个节点包含一个得分，该得分指示当前图像属于2个类之一。
-        self.model.summary() #预览网络结构
+        self.pre_model.summary() #预览网络结构
+        tf.keras.utils.plot_model(self.model, 'cnn_info.png', show_shapes=False)
 
     def train_model(self,path_name):
         images, labels = load_dataset(path_name)         
@@ -44,14 +49,17 @@ class CNN():
         self.model.compile(optimizer='adam',
                            loss='sparse_categorical_crossentropy',
                            metrics=['accuracy'])
-        self.model.fit(train_images, train_labels, batch_size=32,epochs=5)
+        self.model.fit(train_images, train_labels, batch_size=32,epochs=1)
         score = self.model.evaluate(test_images,test_labels, verbose=2)
         print('loss:',score[0])
         print('accuracy:',score[1])
 
+        #self.model.summary() #预览网络结构
+        #tf.keras.utils.plot_model(self.model, 'cnn_info.png', show_shapes=False)
+
     def save_model(self):
-        self.model.save('./model/face_model.h5')
-        self.model.save('./model/face_model',save_format = 'tf')
+        self.model.save('./model/face_model-10.19.h5')
+        #self.model.save('./model/face_model',save_format = 'tf')
 
     #识别人脸
     def face_predict(self,image):    
@@ -71,9 +79,8 @@ class CNN():
 if __name__ == '__main__': 
     model = CNN()#模型初始化
     model.build_model()
-
-    model.train_model('./face_data')
-    model.save_model()
+    #model.train_model('./face_data')
+    #model.save_model()
 
     #image = cv2.imread('./1.jpg')
     #model.face_predict(image)

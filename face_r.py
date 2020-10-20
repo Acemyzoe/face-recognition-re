@@ -15,7 +15,7 @@ if __name__ == '__main__':
     #加载模型
     mode = True
     if mode:
-        model = tf.keras.models.load_model('./model/face_model_h5.h5')
+        model = tf.keras.models.load_model('./model/face_model-10.19.h5')
     else:
         model = tf.saved_model.load('./model/face_model_opt')
     #捕获指定摄像头的实时视频流

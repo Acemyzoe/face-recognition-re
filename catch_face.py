@@ -66,4 +66,4 @@ def CatchPICFromVideo(window_name, camera_idx, catch_pic_num, path_name):
 
 
 if __name__ == '__main__':
-    CatchPICFromVideo("catch_face_data", 0, 5000, './myface')
+    CatchPICFromVideo("catch_face_data", 0, 1000, './face_data/myface')
